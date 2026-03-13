@@ -41,8 +41,24 @@ import { API_BASE_URL } from "../../../core/services/api.service";
         </label>
 
         <div class="actions photo-card-actions" *ngIf="showActions()">
-          <button class="btn btn-primary" type="button" (click)="select.emit(photo())">{{ selectLabel() }}</button>
-          <button class="btn btn-secondary" type="button" (click)="reject.emit(photo())">{{ rejectLabel() }}</button>
+          <button
+            *ngIf="showSelectAction()"
+            class="btn"
+            [ngClass]="selectButtonClass()"
+            type="button"
+            (click)="select.emit(photo())"
+          >
+            {{ selectLabel() }}
+          </button>
+          <button
+            *ngIf="showRejectAction()"
+            class="btn"
+            [ngClass]="rejectButtonClass()"
+            type="button"
+            (click)="reject.emit(photo())"
+          >
+            {{ rejectLabel() }}
+          </button>
         </div>
       </div>
     </article>
@@ -54,6 +70,10 @@ export class PhotoCardComponent {
   readonly selected = input<boolean>(false);
   readonly selectLabel = input<string>("Select");
   readonly rejectLabel = input<string>("Reject");
+  readonly showSelectAction = input<boolean>(true);
+  readonly showRejectAction = input<boolean>(true);
+  readonly selectButtonClass = input<string>("btn-primary");
+  readonly rejectButtonClass = input<string>("btn-secondary");
   readonly select = output<PhotoItem>();
   readonly reject = output<PhotoItem>();
   readonly toggled = output<PhotoItem>();

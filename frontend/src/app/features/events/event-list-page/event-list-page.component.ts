@@ -11,73 +11,29 @@ import { EventItem } from "../../../core/models/types";
   standalone: true,
   imports: [CommonModule, RouterLink],
   template: `
-    <section class="section hero-grid">
-      <article class="panel hero-main">
-        <div class="eyebrow-row">
-          <span class="badge">Offline-first AI culling</span>
-          <span class="hero-inline-note">Local scoring • Duplicate grouping • Manual review ready</span>
-        </div>
-
-        <div class="stack">
-          <h1 class="hero-title">Structured photo culling for weddings, events, and large album workflows.</h1>
-          <p class="hero-copy">
-            Upload an event, process the full batch locally, collapse burst sequences, and surface the strongest frames before the final human pass.
+    <section class="section panel event-list-hero">
+      <div class="event-list-copy">
+        <span class="badge">Events</span>
+        <div class="stack" style="gap: 10px;">
+          <h1 class="event-list-title">Choose an event workspace</h1>
+          <p class="event-list-subtitle">
+            Start from the list below to upload more photos, review shortlisted frames, or open the full event summary.
           </p>
         </div>
+      </div>
 
-        <div class="actions">
-          <a class="btn btn-primary" routerLink="/events/new">Create Event</a>
-          <a class="btn btn-secondary" routerLink="/">Open Events</a>
-        </div>
-      </article>
-
-      <aside class="hero-side">
-        <article class="panel side-card">
-          <span class="side-label">Pipeline</span>
-          <strong>Upload -> analyze -> deduplicate -> shortlist -> final select</strong>
-          <p class="muted">Async background processing keeps uploads responsive while local scoring runs.</p>
-        </article>
-
-        <article class="panel side-card">
-          <span class="side-label">Scoring v1</span>
-          <strong>Sharpness, brightness, portrait quality, smile/eyes, composition</strong>
-          <p class="muted">Duplicates and blur are penalized before shortlist decisions are applied.</p>
-        </article>
-
-        <article class="panel side-card">
-          <span class="side-label">Storage</span>
-          <strong>Local originals + PostgreSQL metadata</strong>
-          <p class="muted">No cloud vision dependency. Keep the architecture ready for stronger local models later.</p>
-        </article>
-      </aside>
-    </section>
-
-    <section class="section kpi-strip">
-      <article class="panel kpi-card">
-        <span class="side-label">Active events</span>
+      <div class="event-list-summary">
         <strong>{{ events().length }}</strong>
-        <p class="muted">Ready for upload, processing, or review.</p>
-      </article>
-
-      <article class="panel kpi-card">
-        <span class="side-label">Workflow mode</span>
-        <strong>Offline-first</strong>
-        <p class="muted">Designed for local storage and local image analysis.</p>
-      </article>
-
-      <article class="panel kpi-card">
-        <span class="side-label">Review flow</span>
-        <strong>AI shortlist + manual override</strong>
-        <p class="muted">Batch actions and duplicate review stay in the same workspace.</p>
-      </article>
+        <span class="muted">workspaces available</span>
+      </div>
     </section>
 
     <section class="section panel event-board">
       <div class="event-board-header">
         <div class="stack" style="gap: 6px;">
-          <span class="side-label">Events</span>
-          <h2 style="margin: 0;">Event workspaces</h2>
-          <p class="muted" style="margin: 0;">Create a workspace per wedding or event, then upload and process the shoot in phases.</p>
+          <span class="side-label">Workspace list</span>
+          <h2 style="margin: 0;">Available events</h2>
+          <p class="muted" style="margin: 0;">Select an event below to continue the review flow or manage its uploads.</p>
         </div>
 
         <div class="event-board-meta">
@@ -125,8 +81,63 @@ import { EventItem } from "../../../core/models/types";
       <section class="panel" style="padding: 14px 16px;" *ngIf="feedback()">
         <span class="muted">{{ feedback() }}</span>
       </section>
-    </section>
+      </section>
   `,
+  styles: [
+    `
+      .event-list-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 20px;
+        align-items: end;
+        padding: 24px;
+      }
+
+      .event-list-copy {
+        display: grid;
+        gap: 14px;
+      }
+
+      .event-list-title {
+        margin: 0;
+        font-size: clamp(2rem, 4vw, 3.2rem);
+        line-height: 1;
+        letter-spacing: -0.05em;
+      }
+
+      .event-list-subtitle {
+        margin: 0;
+        max-width: 54ch;
+        color: var(--muted);
+        font-size: 1rem;
+        line-height: 1.55;
+      }
+
+      .event-list-summary {
+        display: grid;
+        justify-items: end;
+        gap: 6px;
+        text-align: right;
+      }
+
+      .event-list-summary strong {
+        font-size: clamp(2rem, 4vw, 3rem);
+        line-height: 1;
+      }
+
+      @media (max-width: 900px) {
+        .event-list-hero {
+          grid-template-columns: 1fr;
+          align-items: start;
+        }
+
+        .event-list-summary {
+          justify-items: start;
+          text-align: left;
+        }
+      }
+    `,
+  ],
 })
 export class EventListPageComponent implements OnInit {
   private readonly eventService = inject(EventService);

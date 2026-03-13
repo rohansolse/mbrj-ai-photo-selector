@@ -1,10 +1,10 @@
 import { Component } from "@angular/core";
-import { RouterLink, RouterOutlet } from "@angular/router";
+import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 
 @Component({
   selector: "app-root",
   standalone: true,
-  imports: [RouterLink, RouterOutlet],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet],
   template: `
     <div class="app-shell">
       <div class="page-shell">
@@ -16,8 +16,28 @@ import { RouterLink, RouterOutlet } from "@angular/router";
           </a>
 
           <nav class="nav-links">
-            <a class="nav-chip" routerLink="/">Events</a>
-            <a class="nav-chip nav-chip-primary" routerLink="/events/new">Create Event</a>
+            <a
+              class="nav-chip"
+              routerLink="/project-details"
+              routerLinkActive="nav-chip-active"
+            >
+              Project Details
+            </a>
+            <a
+              class="nav-chip"
+              routerLink="/"
+              routerLinkActive="nav-chip-active"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              Events
+            </a>
+            <a
+              class="nav-chip nav-chip-primary"
+              routerLink="/events/new"
+              routerLinkActive="nav-chip-active"
+            >
+              Create Event
+            </a>
           </nav>
         </header>
 

@@ -239,6 +239,18 @@ select {
   border-color: transparent;
 }
 
+.nav-chip-active {
+  background: rgba(170, 90, 44, 0.12);
+  color: var(--accent);
+  border-color: rgba(170, 90, 44, 0.18);
+}
+
+.nav-chip-primary.nav-chip-active {
+  background: var(--accent);
+  color: white;
+  border-color: transparent;
+}
+
 .section {
   margin: 24px 0 32px;
 }
