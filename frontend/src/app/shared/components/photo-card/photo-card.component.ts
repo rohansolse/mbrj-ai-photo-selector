@@ -9,35 +9,40 @@ import { API_BASE_URL } from "../../../core/services/api.service";
   standalone: true,
   imports: [CommonModule],
   template: `
-    <article class="panel card">
-      <img [src]="thumbnailUrl()" [alt]="photo().file_name" />
-      <div class="card-body stack">
-        <div style="display: flex; justify-content: space-between; gap: 12px; align-items: start;">
-          <div>
-            <strong>{{ photo().file_name }}</strong>
-            <div class="muted">{{ photo().group_key || "No duplicate group" }}</div>
+    <article class="panel photo-card-shell" [class.photo-card-selected]="selected()">
+      <div class="photo-frame" [ngClass]="orientationClass()">
+        <img class="photo-frame-image" [src]="thumbnailUrl()" [alt]="photo().file_name" />
+      </div>
+
+      <div class="photo-card-body">
+        <div class="photo-card-header">
+          <div class="photo-card-title-wrap">
+            <strong class="photo-card-title" [title]="photo().file_name">{{ photo().file_name }}</strong>
+            <div class="photo-card-subtitle">{{ duplicateLabel() }}</div>
           </div>
-          <div class="stack" style="justify-items: end;">
-            <span class="badge" [ngClass]="badgeClass()">{{ photo().status }}</span>
-            <span class="badge">{{ photo().ai_recommendation || "pending" }}</span>
+
+          <div class="photo-card-badges">
+            <span class="badge shortlisted" *ngIf="photo().final_selection_id">final selected</span>
+            <span class="badge" [ngClass]="badgeClass()">{{ statusLabel() }}</span>
+            <span class="badge manual">{{ recommendationLabel() }}</span>
           </div>
         </div>
 
-        <div class="metric-list">
-          <div>Overall: <strong>{{ photo().overall_score ?? 0 }}</strong></div>
-          <div>Sharpness: <strong>{{ photo().sharpness_score ?? 0 }}</strong></div>
-          <div>Smile: <strong>{{ photo().smile_score ?? 0 }}</strong></div>
-          <div>Eyes: <strong>{{ photo().eyes_open_score ?? 0 }}</strong></div>
+        <div class="metric-list photo-card-metrics">
+          <div>Overall <strong>{{ score(photo().overall_score) }}</strong></div>
+          <div>Sharpness <strong>{{ score(photo().sharpness_score) }}</strong></div>
+          <div>Smile <strong>{{ score(photo().smile_score) }}</strong></div>
+          <div>Eyes Open <strong>{{ score(photo().eyes_open_score) }}</strong></div>
         </div>
 
-        <label style="display: flex; gap: 8px; align-items: center; font-weight: 600;">
+        <label class="photo-card-toggle">
           <input type="checkbox" [checked]="selected()" (change)="toggled.emit(photo())" />
-          Include in batch action
+          <span>Include in batch action</span>
         </label>
 
-        <div class="actions" *ngIf="showActions()">
-          <button class="btn btn-primary" type="button" (click)="select.emit(photo())">Select</button>
-          <button class="btn btn-secondary" type="button" (click)="reject.emit(photo())">Reject</button>
+        <div class="actions photo-card-actions" *ngIf="showActions()">
+          <button class="btn btn-primary" type="button" (click)="select.emit(photo())">{{ selectLabel() }}</button>
+          <button class="btn btn-secondary" type="button" (click)="reject.emit(photo())">{{ rejectLabel() }}</button>
         </div>
       </div>
     </article>
@@ -47,6 +52,8 @@ export class PhotoCardComponent {
   readonly photo = input.required<PhotoItem>();
   readonly showActions = input<boolean>(false);
   readonly selected = input<boolean>(false);
+  readonly selectLabel = input<string>("Select");
+  readonly rejectLabel = input<string>("Reject");
   readonly select = output<PhotoItem>();
   readonly reject = output<PhotoItem>();
   readonly toggled = output<PhotoItem>();
@@ -54,6 +61,10 @@ export class PhotoCardComponent {
   thumbnailUrl() {
     const path = this.photo().thumbnail_path || "";
     return path.startsWith("http") ? path : `${API_BASE_URL.replace(/\/api$/, "")}/uploads/${path}`;
+  }
+
+  orientationClass() {
+    return (this.photo().height || 0) > (this.photo().width || 0) ? "portrait" : "landscape";
   }
 
   badgeClass() {
@@ -65,5 +76,23 @@ export class PhotoCardComponent {
       return "rejected";
     }
     return "manual";
+  }
+
+  duplicateLabel() {
+    return this.photo().group_key ? `Duplicate group ${this.photo().group_key}` : "No duplicate group";
+  }
+
+  statusLabel() {
+    const status = this.photo().status || "pending";
+    return status.replaceAll("_", " ");
+  }
+
+  recommendationLabel() {
+    const recommendation = this.photo().ai_recommendation || "pending";
+    return recommendation.replaceAll("_", " ");
+  }
+
+  score(value?: number) {
+    return Number(value || 0).toFixed(2);
   }
 }

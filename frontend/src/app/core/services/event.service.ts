@@ -15,6 +15,10 @@ export class EventService {
     return this.api.post<EventItem>("/events", payload);
   }
 
+  deleteEvent(eventId: number) {
+    return this.api.delete<void>(`/events/${eventId}`);
+  }
+
   uploadPhotos(eventId: string, files: File[]) {
     const formData = new FormData();
     files.forEach((file) => formData.append("photos", file, file.name));
@@ -51,6 +55,10 @@ export class EventService {
 
   selectPhoto(photoId: number) {
     return this.api.patch(`/photos/${photoId}/select`, { source: "manual" });
+  }
+
+  unselectPhoto(photoId: number) {
+    return this.api.patch(`/photos/${photoId}/unselect`, {});
   }
 
   rejectPhoto(photoId: number) {

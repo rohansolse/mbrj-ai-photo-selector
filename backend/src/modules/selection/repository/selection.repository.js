@@ -15,6 +15,10 @@ async function saveFinalSelection({ eventId, photoId, selectedBy = "user", sourc
   return rows[0];
 }
 
+async function removeFinalSelection(photoId) {
+  await pool.query(`DELETE FROM final_selections WHERE photo_id = $1`, [photoId]);
+}
+
 async function rejectPhoto(photoId) {
   await pool.query(
     `
@@ -50,9 +54,12 @@ async function listShortlistedPhotos(eventId) {
         ps.composition_score,
         ps.duplicate_score,
         ps.overall_score,
-        ps.ai_recommendation
+        ps.ai_recommendation,
+        fs.id AS final_selection_id,
+        fs.source AS final_selection_source
       FROM photos p
       LEFT JOIN photo_scores ps ON ps.photo_id = p.id
+      LEFT JOIN final_selections fs ON fs.photo_id = p.id
       WHERE p.event_id = $1
         AND p.status = 'shortlisted'
       ORDER BY ps.overall_score DESC NULLS LAST
@@ -76,9 +83,12 @@ async function listRejectedPhotos(eventId) {
         ps.composition_score,
         ps.duplicate_score,
         ps.overall_score,
-        ps.ai_recommendation
+        ps.ai_recommendation,
+        fs.id AS final_selection_id,
+        fs.source AS final_selection_source
       FROM photos p
       LEFT JOIN photo_scores ps ON ps.photo_id = p.id
+      LEFT JOIN final_selections fs ON fs.photo_id = p.id
       WHERE p.event_id = $1
         AND p.status = 'rejected'
       ORDER BY ps.overall_score ASC NULLS LAST
@@ -180,6 +190,7 @@ module.exports = {
   getRankedPhotos,
   listRejectedPhotos,
   listShortlistedPhotos,
+  removeFinalSelection,
   rejectPhoto,
   saveFinalSelection,
   shortlistPhoto,

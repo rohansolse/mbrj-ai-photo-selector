@@ -41,4 +41,17 @@ async function listEvents() {
   return rows;
 }
 
-module.exports = { createEvent, getEventById, listEvents };
+async function deleteEvent(eventId) {
+  const { rows } = await pool.query(
+    `
+      DELETE FROM events
+      WHERE id = $1
+      RETURNING id, event_name, event_type, created_at
+    `,
+    [eventId],
+  );
+
+  return rows[0] || null;
+}
+
+module.exports = { createEvent, deleteEvent, getEventById, listEvents };

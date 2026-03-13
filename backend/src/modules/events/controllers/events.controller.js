@@ -6,6 +6,8 @@ const jobsService = require("../../jobs/services/jobs.service");
 const imagesRepository = require("../../images/repository/images.repository");
 const duplicatesRepository = require("../../duplicates/repository/duplicates.repository");
 const selectionRepository = require("../../selection/repository/selection.repository");
+const { env } = require("../../../config/env");
+const { getEventUploadPaths, removeDir } = require("../../../utils/fileSystem");
 
 const createEvent = asyncHandler(async (req, res) => {
   const { eventName, eventType } = req.body;
@@ -21,6 +23,22 @@ const createEvent = asyncHandler(async (req, res) => {
 const listEvents = asyncHandler(async (_req, res) => {
   const events = await eventRepository.listEvents();
   res.json(events);
+});
+
+const deleteEvent = asyncHandler(async (req, res) => {
+  const { eventId } = req.params;
+  const event = await eventRepository.getEventById(eventId);
+
+  if (!event) {
+    throw httpError(404, "Event not found");
+  }
+
+  await eventRepository.deleteEvent(eventId);
+
+  const { baseDir } = getEventUploadPaths(env.uploadRoot, eventId);
+  await removeDir(baseDir);
+
+  res.status(204).send();
 });
 
 const uploadPhotos = asyncHandler(async (req, res) => {
@@ -87,6 +105,7 @@ const getEventSummary = asyncHandler(async (req, res) => {
 
 module.exports = {
   createEvent,
+  deleteEvent,
   getDuplicateGroups,
   getEventPhotos,
   getEventSummary,

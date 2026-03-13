@@ -38,4 +38,16 @@ const rejectPhoto = asyncHandler(async (req, res) => {
   res.json(result);
 });
 
-module.exports = { rejectPhoto, selectPhoto };
+const unselectPhoto = asyncHandler(async (req, res) => {
+  const { photoId } = req.params;
+  const photo = await resolvePhoto(photoId);
+
+  if (!photo) {
+    throw httpError(404, "Photo not found");
+  }
+
+  const result = await selectionService.manualUnselectPhoto(photoId);
+  res.json(result);
+});
+
+module.exports = { rejectPhoto, selectPhoto, unselectPhoto };

@@ -6,20 +6,23 @@ import { RouterLink, RouterOutlet } from "@angular/router";
   standalone: true,
   imports: [RouterLink, RouterOutlet],
   template: `
-    <div class="page-shell">
-      <header class="top-nav">
-        <a routerLink="/" class="stack">
-          <strong>MBRJ AI Photo Selector</strong>
-          <span class="muted">Offline-first culling for wedding and event workflows</span>
-        </a>
+    <div class="app-shell">
+      <div class="page-shell">
+        <header class="top-nav panel">
+          <a routerLink="/" class="brand-block">
+            <span class="brand-kicker">MBRJ Studio Tools</span>
+            <strong class="brand-title">AI Photo Selector</strong>
+            <span class="brand-subtitle">Offline-first culling for wedding and event workflows</span>
+          </a>
 
-        <nav class="nav-links">
-          <a class="nav-chip" routerLink="/">Events</a>
-          <a class="nav-chip" routerLink="/events/new">Create Event</a>
-        </nav>
-      </header>
+          <nav class="nav-links">
+            <a class="nav-chip" routerLink="/">Events</a>
+            <a class="nav-chip nav-chip-primary" routerLink="/events/new">Create Event</a>
+          </nav>
+        </header>
 
-      <router-outlet></router-outlet>
+        <router-outlet></router-outlet>
+      </div>
     </div>
   `,
 })

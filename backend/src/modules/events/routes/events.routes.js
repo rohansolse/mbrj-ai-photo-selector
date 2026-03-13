@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get("/", controller.listEvents);
 router.post("/", controller.createEvent);
+router.delete("/:eventId", controller.deleteEvent);
 router.post("/:eventId/upload", uploadMiddleware.array("photos", 500), controller.uploadPhotos);
 router.post("/:eventId/process", controller.processEvent);
 router.get("/:eventId/photos", controller.getEventPhotos);

@@ -49,8 +49,15 @@ async function manualSelectPhoto({ eventId, photoId, selectedBy, source }) {
 }
 
 async function manualRejectPhoto(photoId) {
+  await selectionRepository.removeFinalSelection(photoId);
   await selectionRepository.rejectPhoto(photoId);
   return { photoId, status: "rejected" };
 }
 
-module.exports = { applySelectionDecisions, manualRejectPhoto, manualSelectPhoto };
+async function manualUnselectPhoto(photoId) {
+  await selectionRepository.removeFinalSelection(photoId);
+  await selectionRepository.updatePhotoStatus(photoId, "shortlisted");
+  return { photoId, status: "shortlisted", finalSelection: false };
+}
+
+module.exports = { applySelectionDecisions, manualRejectPhoto, manualSelectPhoto, manualUnselectPhoto };

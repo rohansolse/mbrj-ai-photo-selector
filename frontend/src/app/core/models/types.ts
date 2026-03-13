@@ -12,6 +12,8 @@ export interface PhotoItem {
   file_name: string;
   original_path: string;
   thumbnail_path: string;
+  width?: number;
+  height?: number;
   status: string;
   overall_score?: number;
   sharpness_score?: number;
@@ -23,6 +25,8 @@ export interface PhotoItem {
   ai_recommendation?: string;
   group_key?: string | null;
   is_duplicate?: boolean;
+  final_selection_id?: number | null;
+  final_selection_source?: string | null;
 }
 
 export interface DuplicateGroup {

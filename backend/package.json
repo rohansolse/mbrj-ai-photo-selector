@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
-    "migrate": "node src/utils/runMigrations.js"
+    "migrate": "node src/utils/runMigrations.js",
+    "thumbnails:regen": "node src/utils/regenerateThumbnails.js"
   },
   "dependencies": {
     "@tensorflow/tfjs-node": "^4.22.0",

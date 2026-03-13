@@ -30,12 +30,22 @@ async function persistUploadedFiles({ eventId, files }) {
     await fs.writeFile(originalPath, file.buffer);
 
     const metadata = await sharp(file.buffer, { failOn: "none" }).metadata();
+    const normalizedWidth =
+      metadata.orientation && [5, 6, 7, 8].includes(metadata.orientation)
+        ? metadata.height || 0
+        : metadata.width || 0;
+    const normalizedHeight =
+      metadata.orientation && [5, 6, 7, 8].includes(metadata.orientation)
+        ? metadata.width || 0
+        : metadata.height || 0;
 
     await sharp(file.buffer, { failOn: "none" })
+      .rotate()
       .resize(env.thumbnailWidth, env.thumbnailHeight, {
-        fit: "cover",
-        position: "attention",
+        fit: "inside",
+        withoutEnlargement: true,
       })
+      .flatten({ background: "#f6f1e8" })
       .jpeg({ quality: 82 })
       .toFile(thumbnailPath);
 
@@ -44,8 +54,8 @@ async function persistUploadedFiles({ eventId, files }) {
       fileName: file.originalname,
       originalPath: storedOriginalPath,
       thumbnailPath: storedThumbnailPath,
-      width: metadata.width || 0,
-      height: metadata.height || 0,
+      width: normalizedWidth,
+      height: normalizedHeight,
       fileSize: file.size,
       capturedAt: metadata.exif ? new Date() : null,
     });
