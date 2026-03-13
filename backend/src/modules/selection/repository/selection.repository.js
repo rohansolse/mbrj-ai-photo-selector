@@ -125,6 +125,11 @@ async function getEventSummary(eventId) {
         ), 0) AS rejected_count,
         COALESCE((
           SELECT COUNT(*)
+          FROM final_selections fs
+          WHERE fs.event_id = e.id
+        ), 0) AS final_selected_count,
+        COALESCE((
+          SELECT COUNT(*)
           FROM duplicate_groups dg
           WHERE dg.event_id = e.id
         ), 0) AS duplicate_groups_count,

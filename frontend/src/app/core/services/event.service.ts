@@ -54,14 +54,14 @@ export class EventService {
   }
 
   selectPhoto(photoId: number) {
-    return this.api.patch(`/photos/${photoId}/select`, { source: "manual" });
+    return this.api.patch<{ id: number; photo_id: number; source?: string }>(`/photos/${photoId}/select`, { source: "manual" });
   }
 
   unselectPhoto(photoId: number) {
-    return this.api.patch(`/photos/${photoId}/unselect`, {});
+    return this.api.patch<{ photoId: number; status: string; finalSelection: boolean }>(`/photos/${photoId}/unselect`, {});
   }
 
   rejectPhoto(photoId: number) {
-    return this.api.patch(`/photos/${photoId}/reject`, {});
+    return this.api.patch<{ photoId: number; status: string }>(`/photos/${photoId}/reject`, {});
   }
 }

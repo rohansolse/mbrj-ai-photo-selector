@@ -15,18 +15,19 @@ import { API_BASE_URL } from "../../../core/services/api.service";
       </div>
 
       <div class="photo-card-body">
-        <div class="photo-card-header">
-          <div class="photo-card-title-wrap">
-            <strong class="photo-card-title" [title]="photo().file_name">{{ photo().file_name }}</strong>
-            <div class="photo-card-subtitle">{{ duplicateLabel() }}</div>
-          </div>
+        <div class="photo-card-title-wrap">
+          <strong class="photo-card-title" [title]="photo().file_name">{{ photo().file_name }}</strong>
+        </div>
 
+        <div class="photo-card-status-strip">
           <div class="photo-card-badges">
             <span class="badge shortlisted" *ngIf="photo().final_selection_id">final selected</span>
             <span class="badge" [ngClass]="badgeClass()">{{ statusLabel() }}</span>
             <span class="badge manual">{{ recommendationLabel() }}</span>
           </div>
         </div>
+
+        <div class="photo-card-subtitle">{{ duplicateLabel() }}</div>
 
         <div class="metric-list photo-card-metrics">
           <div>Overall <strong>{{ score(photo().overall_score) }}</strong></div>
@@ -46,6 +47,7 @@ import { API_BASE_URL } from "../../../core/services/api.service";
             class="btn"
             [ngClass]="selectButtonClass()"
             type="button"
+            [disabled]="disableSelectAction()"
             (click)="select.emit(photo())"
           >
             {{ selectLabel() }}
@@ -55,6 +57,7 @@ import { API_BASE_URL } from "../../../core/services/api.service";
             class="btn"
             [ngClass]="rejectButtonClass()"
             type="button"
+            [disabled]="disableRejectAction()"
             (click)="reject.emit(photo())"
           >
             {{ rejectLabel() }}
@@ -72,6 +75,8 @@ export class PhotoCardComponent {
   readonly rejectLabel = input<string>("Reject");
   readonly showSelectAction = input<boolean>(true);
   readonly showRejectAction = input<boolean>(true);
+  readonly disableSelectAction = input<boolean>(false);
+  readonly disableRejectAction = input<boolean>(false);
   readonly selectButtonClass = input<string>("btn-primary");
   readonly rejectButtonClass = input<string>("btn-secondary");
   readonly select = output<PhotoItem>();

@@ -456,7 +456,7 @@ select {
 
 .photo-card-body {
   display: grid;
-  gap: 16px;
+  gap: 14px;
   padding: 18px;
 }
 
@@ -470,7 +470,6 @@ select {
 .photo-card-title-wrap {
   min-width: 0;
   display: grid;
-  gap: 6px;
 }
 
 .photo-card-title {
@@ -486,13 +485,22 @@ select {
   color: var(--muted);
   line-height: 1.35;
   font-size: 0.92rem;
+  min-height: 2.7em;
+}
+
+.photo-card-status-strip {
+  min-height: 72px;
 }
 
 .photo-card-badges {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   gap: 8px;
-  justify-items: end;
-  flex-shrink: 0;
+  align-content: start;
+}
+
+.photo-card-badges .badge {
+  white-space: nowrap;
 }
 
 .photo-card-metrics {
@@ -530,6 +538,10 @@ select {
   justify-content: center;
 }
 
+.photo-card-actions .btn:disabled {
+  opacity: 0.42;
+}
+
 @media (max-width: 900px) {
   .page-header {
     grid-template-columns: 1fr;
@@ -559,12 +571,8 @@ select {
     font-size: clamp(2.4rem, 10vw, 4rem);
   }
 
-  .photo-card-header {
-    flex-direction: column;
-  }
-
   .photo-card-badges {
-    justify-items: start;
+    justify-content: flex-start;
   }
 }
 

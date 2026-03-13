@@ -10,20 +10,8 @@ import { StatCardComponent } from "../../../shared/components/stat-card/stat-car
 @Component({
   selector: "app-processing-status-page",
   standalone: true,
-  imports: [CommonModule, RouterLink, StatCardComponent],
+  imports: [CommonModule, StatCardComponent],
   template: `
-    <section class="section page-header panel">
-      <div class="stack">
-        <span class="badge">Processing</span>
-        <h1 class="hero-title">Track scoring and shortlist progress.</h1>
-        <p class="hero-subtitle">Uploads return immediately; background jobs continue local analysis and status transitions.</p>
-      </div>
-      <div class="actions" style="align-items: start;">
-        <a class="btn btn-primary" [routerLink]="['/events', eventId(), 'shortlist']">Open shortlist</a>
-        <a class="btn btn-secondary" [routerLink]="['/events', eventId(), 'duplicates']">Review duplicates</a>
-      </div>
-    </section>
-
     <section class="section stats-grid">
       <app-stat-card label="Uploaded" [value]="summary()?.total_uploaded || 0" />
       <app-stat-card label="Shortlisted" [value]="summary()?.shortlisted_count || 0" />

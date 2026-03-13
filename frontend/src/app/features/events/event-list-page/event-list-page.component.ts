@@ -11,23 +11,6 @@ import { EventItem } from "../../../core/models/types";
   standalone: true,
   imports: [CommonModule, RouterLink],
   template: `
-    <section class="section panel event-list-hero">
-      <div class="event-list-copy">
-        <span class="badge">Events</span>
-        <div class="stack" style="gap: 10px;">
-          <h1 class="event-list-title">Choose an event workspace</h1>
-          <p class="event-list-subtitle">
-            Start from the list below to upload more photos, review shortlisted frames, or open the full event summary.
-          </p>
-        </div>
-      </div>
-
-      <div class="event-list-summary">
-        <strong>{{ events().length }}</strong>
-        <span class="muted">workspaces available</span>
-      </div>
-    </section>
-
     <section class="section panel event-board">
       <div class="event-board-header">
         <div class="stack" style="gap: 6px;">
@@ -83,61 +66,6 @@ import { EventItem } from "../../../core/models/types";
       </section>
       </section>
   `,
-  styles: [
-    `
-      .event-list-hero {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        gap: 20px;
-        align-items: end;
-        padding: 24px;
-      }
-
-      .event-list-copy {
-        display: grid;
-        gap: 14px;
-      }
-
-      .event-list-title {
-        margin: 0;
-        font-size: clamp(2rem, 4vw, 3.2rem);
-        line-height: 1;
-        letter-spacing: -0.05em;
-      }
-
-      .event-list-subtitle {
-        margin: 0;
-        max-width: 54ch;
-        color: var(--muted);
-        font-size: 1rem;
-        line-height: 1.55;
-      }
-
-      .event-list-summary {
-        display: grid;
-        justify-items: end;
-        gap: 6px;
-        text-align: right;
-      }
-
-      .event-list-summary strong {
-        font-size: clamp(2rem, 4vw, 3rem);
-        line-height: 1;
-      }
-
-      @media (max-width: 900px) {
-        .event-list-hero {
-          grid-template-columns: 1fr;
-          align-items: start;
-        }
-
-        .event-list-summary {
-          justify-items: start;
-          text-align: left;
-        }
-      }
-    `,
-  ],
 })
 export class EventListPageComponent implements OnInit {
   private readonly eventService = inject(EventService);

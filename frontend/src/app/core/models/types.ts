@@ -43,6 +43,7 @@ export interface EventSummary {
   total_uploaded: number;
   shortlisted_count: number;
   rejected_count: number;
+  final_selected_count: number;
   duplicate_groups_count: number;
   average_score: number;
   top_score: number;

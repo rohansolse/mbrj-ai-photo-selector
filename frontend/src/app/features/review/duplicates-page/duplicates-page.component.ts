@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit, inject, signal } from "@angular/core";
-import { ActivatedRoute, RouterLink } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 
 import { DuplicateGroup } from "../../../core/models/types";
 import { EventService } from "../../../core/services/event.service";
@@ -9,19 +9,8 @@ import { API_BASE_URL } from "../../../core/services/api.service";
 @Component({
   selector: "app-duplicates-page",
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   template: `
-    <section class="section page-header panel">
-      <div class="stack">
-        <span class="badge">Duplicate review</span>
-        <h1 class="hero-title">Burst groups and near-duplicates.</h1>
-        <p class="hero-subtitle">Each group keeps one winner automatically and leaves the rest ready for manual override.</p>
-      </div>
-      <div class="actions" style="align-items: start;">
-        <a class="btn btn-primary" [routerLink]="['/events', eventId(), 'shortlist']">Back to shortlist</a>
-      </div>
-    </section>
-
     <section class="section stack">
       <article class="panel" style="padding: 20px;" *ngFor="let group of groups()">
         <div class="stack">
