@@ -1,0 +1,19 @@
+{
+  "name": "mbrj-ai-photo-selector",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Offline-first AI photo selection workflow for wedding and event albums.",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix backend\" \"npm run start --prefix frontend\"",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run start --prefix frontend",
+    "migrate": "npm run migrate --prefix backend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
