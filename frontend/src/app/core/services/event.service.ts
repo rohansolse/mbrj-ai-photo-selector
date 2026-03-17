@@ -1,7 +1,7 @@
 import { Injectable, inject } from "@angular/core";
 
 import { API_BASE_URL, ApiService } from "./api.service";
-import { DuplicateGroup, EventItem, EventSummary, PhotoItem } from "../models/types";
+import { DuplicateGroup, EventItem, EventSummary, PhotoItem, UploadBatchResult } from "../models/types";
 
 @Injectable({ providedIn: "root" })
 export class EventService {
@@ -25,7 +25,7 @@ export class EventService {
     return fetch(`${API_BASE_URL}/events/${eventId}/upload`, {
       method: "POST",
       body: formData,
-    }).then((response) => response.json());
+    }).then((response) => response.json() as Promise<UploadBatchResult>);
   }
 
   processEvent(eventId: string) {

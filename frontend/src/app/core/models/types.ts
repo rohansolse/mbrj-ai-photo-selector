@@ -49,3 +49,9 @@ export interface EventSummary {
   top_score: number;
   score_distribution?: Record<string, number>;
 }
+
+export interface UploadBatchResult {
+  eventId: string;
+  uploadedCount: number;
+  status: string;
+}
